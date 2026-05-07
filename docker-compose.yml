@@ -1,0 +1,100 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+
+  api:
+    build: .
+    command: sh -c "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000"
+    restart: always
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - backend
+    ports:
+      - "8000:8000"
+
+  celery-worker-events:
+    build: .
+    command: python -m celery -A src.celery_app worker -Q events -l INFO
+    restart: always
+    env_file: .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend
+    profiles:
+      - worker
+
+  celery-worker-scheduled:
+    build: .
+    command: python -m celery -A src.celery_app worker -Q scheduled -l INFO
+    restart: always
+    env_file: .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend
+    profiles:
+      - worker
+
+  celery-worker-reprocess:
+    build: .
+    command: python -m celery -A src.celery_app worker -Q reprocess -l INFO
+    restart: always
+    env_file: .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend
+    profiles:
+      - worker
+  celery-beat:
+    build: .
+    command: celery -A src.celery_app beat -l INFO
+    restart: always
+    env_file: .env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend
+  flower:
+    build: .
+    command: celery -A src.celery_app flower --port=5555
+    profiles: ["monitoring"]
+    ports:
+      - "5555:5555"
+    env_file: .env
+    depends_on:
+      - redis
+    networks:
+      - backend
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  backend:

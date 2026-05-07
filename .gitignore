@@ -1,0 +1,52 @@
+# Environment files
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Mypy / Ruff / lint cache
+.mypy_cache/
+.ruff_cache/
+
+# Alembic
+alembic/versions/__pycache__/
+
+# Docker
+docker-compose.override.yml
+
+# Build files
+dist/
+build/
+*.egg-info/
+
+# Logs
+logs/
+*.log
+
+# Celery Beat
+celerybeat-schedule
+celerybeat-schedule.*
