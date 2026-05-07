@@ -365,19 +365,11 @@ Scheduled Processing
 Payout Release / Hold / Manual Review
 ```
 
----
 
-# Future Improvements
 
-* OpenTelemetry integration
-* Grafana dashboards
-* Jaeger tracing
-* Kafka event streaming
-* Multi-tenant vendor support
-* Advanced fraud analytics
 
----
 
 # Author
+@Aa-ra-dhana
 
 Developed for vendor payout settlement workflow automation using modern backend architecture and asynchronous processing.
