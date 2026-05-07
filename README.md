@@ -190,10 +190,18 @@ Example:
 ```env
 DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/vendor_db
 REDIS_URL=redis://localhost:6379/0
-BROKER_URL=redis://localhost:6379/0
-RESULT_BACKEND=redis://localhost:6379/0
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ```
-
+```env.docker
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=database
+DATABASE_URL=postgresql+asyncpg://postgres:password@host.docker.internal:5432/database
+REDIS_URL=redis://localhost:6379/0
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/0
+```
 ---
 
 # Installation Setup
